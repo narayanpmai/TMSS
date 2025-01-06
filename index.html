@@ -51,7 +51,7 @@
 
         <!-- Delete All Tasks Button -->
         <div class="text-center mt-4">
-            <button class="btn btn-danger" onclick="deleteAllTasks()">सबै मेट्नुहोस्</button>
+            <button class="btn btn-danger" onclick="deleteAllTasks()">Delete All Tasks</button>
         </div>
     </div>
 
@@ -97,6 +97,7 @@
                         </div>
                         <div>
                             <button class="btn btn-sm btn-success me-2" onclick="markCompleted(${task.id})">${task.completed ? 'Undo' : 'Complete'}</button>
+                            <button class="btn btn-sm btn-warning me-2" onclick="editTask(${task.id})">Edit</button>
                             <button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})">Delete</button>
                         </div>
                     </div>
@@ -118,18 +119,36 @@
             renderTasks();
         }
 
+        // Edit Task
+        function editTask(taskId) {
+            const task = tasks.find(task => task.id === taskId);
+            const newTitle = prompt('Edit Task Title:', task.title);
+            const newAssignee = prompt('Edit Assignee:', task.assignee);
+
+            if (newTitle !== null && newAssignee !== null) {
+                task.title = newTitle;
+                task.assignee = newAssignee;
+                saveTasksToLocalStorage();
+                renderTasks();
+            }
+        }
+
         // Delete Task
         function deleteTask(taskId) {
-            tasks = tasks.filter(task => task.id !== taskId);
-            saveTasksToLocalStorage();
-            renderTasks();
+            if (confirm('Are you sure you want to delete this task?')) {
+                tasks = tasks.filter(task => task.id !== taskId);
+                saveTasksToLocalStorage();
+                renderTasks();
+            }
         }
 
         // Delete All Tasks
         function deleteAllTasks() {
-            tasks = [];
-            saveTasksToLocalStorage();
-            renderTasks();
+            if (confirm('Are you sure you want to delete all tasks?')) {
+                tasks = [];
+                saveTasksToLocalStorage();
+                renderTasks();
+            }
         }
 
         // Save Tasks to Local Storage
