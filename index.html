@@ -48,6 +48,11 @@
         <div id="taskList" class="list-group">
             <!-- Tasks will appear here dynamically -->
         </div>
+
+        <!-- Delete All Tasks Button -->
+        <div class="text-center mt-4">
+            <button class="btn btn-danger" onclick="deleteAllTasks()">सबै मेट्नुहोस्</button>
+        </div>
     </div>
 
     <script>
@@ -116,6 +121,13 @@
         // Delete Task
         function deleteTask(taskId) {
             tasks = tasks.filter(task => task.id !== taskId);
+            saveTasksToLocalStorage();
+            renderTasks();
+        }
+
+        // Delete All Tasks
+        function deleteAllTasks() {
+            tasks = [];
             saveTasksToLocalStorage();
             renderTasks();
         }
